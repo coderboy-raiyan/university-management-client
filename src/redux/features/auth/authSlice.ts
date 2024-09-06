@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TUser } from "../../../types";
 
 type TAuthInitialState = {
-  user: null | object;
+  user: TUser | null;
   accessToken: null | string;
 };
 
