@@ -1,3 +1,4 @@
+import AcademicSemester from "../pages/admin/academicManagement/academicSemester";
 import AdminDashboard from "../pages/admin/adminDashboard";
 import CreateAdmin from "../pages/admin/createAdmin";
 import CreateFaculty from "../pages/admin/createFaculty";
@@ -11,20 +12,30 @@ export const adminPaths: TRoutePaths[] = [
     element: <AdminDashboard />,
   },
   {
-    name: "User Management",
+    name: "Academic M.",
     children: [
       {
-        name: "Create Student",
+        name: "Academic semester",
+        path: "academic-semester",
+        element: <AcademicSemester />,
+      },
+    ],
+  },
+  {
+    name: "User M.",
+    children: [
+      {
+        name: "Create student",
         path: "create-student",
         element: <CreateStudent />,
       },
       {
-        name: "Create Faculty",
+        name: "Create faculty",
         path: "create-faculty",
         element: <CreateFaculty />,
       },
       {
-        name: "Create Admin",
+        name: "Create admin",
         path: "create-admin",
         element: <CreateAdmin />,
       },
