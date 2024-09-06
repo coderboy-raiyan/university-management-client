@@ -1,6 +1,6 @@
 import { TRoutePaths } from "../types";
 
-function generateRoutes<T extends TRoutePaths[]>(routes: T) {
+function generateRoutes(routes: TRoutePaths[]) {
   return routes.reduce(
     (prev: Omit<TRoutePaths, "children" | "name">[], curr) => {
       if (curr.children) {
