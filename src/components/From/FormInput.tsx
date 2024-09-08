@@ -1,26 +1,22 @@
-import { Input } from "antd";
+import { Form, Input } from "antd";
 import { Controller } from "react-hook-form";
 
 function FormInput({
   type,
   name,
-  labelName,
+  label,
   placeholder = "",
 }: {
   type: string;
   name: string;
-  labelName: string;
+  label: string;
   placeholder?: string;
 }) {
   return (
-    <label
-      style={{ marginBottom: "10px", display: "inline-block", width: "100%" }}
-      htmlFor={name}
-    >
-      <p>{labelName}</p>
-      <Controller
-        name={name}
-        render={({ field }) => (
+    <Controller
+      name={name}
+      render={({ field }) => (
+        <Form.Item label={label}>
           <Input
             {...field}
             name={name}
@@ -29,9 +25,9 @@ function FormInput({
             type={type}
             placeholder={placeholder}
           />
-        )}
-      />
-    </label>
+        </Form.Item>
+      )}
+    />
   );
 }
 

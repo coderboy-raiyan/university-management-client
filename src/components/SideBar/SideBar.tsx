@@ -27,7 +27,11 @@ function SideBar() {
   }
 
   return (
-    <Sider breakpoint="lg" collapsedWidth="0">
+    <Sider
+      breakpoint="lg"
+      collapsedWidth="0"
+      style={{ height: "100vh", position: "sticky", top: "0", left: "0" }}
+    >
       <div style={{ color: "white", textAlign: "center", padding: "10px" }}>
         <h1>University M.</h1>
       </div>

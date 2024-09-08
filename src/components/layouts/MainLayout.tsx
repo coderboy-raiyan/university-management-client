@@ -14,17 +14,17 @@ const MainLayout = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout>
       <SideBar />
       <Layout>
         <Header style={{ padding: "0px 10px", background: "#001529" }}>
           <Button onClick={() => dispatch(logout())}>Logout</Button>
         </Header>
-        <Content style={{ margin: "24px 16px 0", height: "" }}>
+        <Content style={{ margin: "24px 16px" }}>
           <div
             style={{
               padding: 24,
-              minHeight: 360,
+              minHeight: "100%",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
