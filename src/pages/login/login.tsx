@@ -41,13 +41,8 @@ function Login() {
         }}
         onSubmit={onSubmit}
       >
-        <FormInput
-          name="id"
-          type="text"
-          labelName="User Id"
-          placeholder="B-0001"
-        />
-        <FormInput name="password" type="password" labelName="Password" />
+        <FormInput name="id" type="text" label="User Id" placeholder="B-0001" />
+        <FormInput name="password" type="password" label="Password" />
         {isLoading ? (
           <Button loading={isLoading}>Please wait...</Button>
         ) : (

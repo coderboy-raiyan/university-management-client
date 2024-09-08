@@ -43,11 +43,12 @@ const customBaseQueryWithRefreshToken: BaseQueryFn<
       );
       const user = jwtDecode(data?.accessToken) as TUser;
       api.dispatch(setUser({ user, accessToken: data?.accessToken }));
+      result = await baseQuery(args, api, extraOptions);
     } catch (error) {
       api.dispatch(logout());
     }
   }
-  result = await baseQuery(args, api, extraOptions);
+
   return result;
 };
 

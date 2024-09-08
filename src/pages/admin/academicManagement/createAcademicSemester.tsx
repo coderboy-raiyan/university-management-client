@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Col, Flex } from "antd";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import CustomForm from "../../../components/From/CustomForm";
 import FormSelectInput from "../../../components/From/FormSelectInput";
 import { AcademicSemesterNameOptions } from "../../../constant/academicSemester.constant";
 import { MonthsOptions } from "../../../constant/global.constant";
+import { useCreateAcademicSemestersMutation } from "../../../redux/features/admin/academicManagement.api";
 import { academicSemesterSchema } from "../../../schemas/academicManagement.schema";
 
 const yearOptions = new Array(5).fill(1).map((__, i) => {
@@ -16,14 +18,23 @@ const yearOptions = new Array(5).fill(1).map((__, i) => {
 });
 
 function CreateAcademicSemester() {
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const [createAcademicSemester, { isLoading }] =
+    useCreateAcademicSemestersMutation();
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const semesterData = {
       ...data,
       name: AcademicSemesterNameOptions.find((opt) => opt.value === data.name)
         ?.label,
       code: data?.name,
     };
-    console.log(semesterData);
+
+    try {
+      await createAcademicSemester(semesterData).unwrap();
+      toast.success("Semester created successfully");
+    } catch (error: any) {
+      toast.error(error?.data?.message);
+    }
   };
 
   return (
@@ -55,7 +66,13 @@ function CreateAcademicSemester() {
             name="endMonth"
             label="End Month"
           />
-          <Button htmlType="submit">Submit</Button>
+          {isLoading ? (
+            <Button loading={isLoading}>Please wait...</Button>
+          ) : (
+            <Button htmlType="submit" type="primary">
+              Submit
+            </Button>
+          )}
         </CustomForm>
       </Col>
     </Flex>

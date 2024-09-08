@@ -13,9 +13,18 @@ function CustomForm({
   onSubmit,
   children,
   defaultValues = {},
-  resolver = {},
+  resolver = null,
 }: TCustomFrom) {
-  const methods = useForm({ defaultValues, resolver });
+  const formConfig: any = {};
+
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
+  }
+  if (resolver) {
+    formConfig["resolver"] = resolver;
+  }
+  console.log(formConfig);
+  const methods = useForm(formConfig);
   return (
     <FormProvider {...methods}>
       <Form layout="vertical" onFinish={methods.handleSubmit(onSubmit)}>
