@@ -1,12 +1,15 @@
 import { Form, Select } from "antd";
+import { SizeType } from "antd/es/config-provider/SizeContext";
 import { Controller } from "react-hook-form";
+import { TFormInputSelectOptions } from "../../types";
 
 type TFormSelectInput = {
   name: string;
   label: string;
-  options: { value: string; label: string; disabled?: boolean }[];
+  options: TFormInputSelectOptions;
   placeholder?: string;
   required?: boolean;
+  size?: SizeType;
 };
 
 function FormSelectInput({
@@ -14,6 +17,7 @@ function FormSelectInput({
   label,
   options,
   placeholder = "",
+  size,
 }: TFormSelectInput) {
   return (
     <Controller
@@ -23,7 +27,7 @@ function FormSelectInput({
           <Select
             {...field}
             style={{ width: "100%" }}
-            size="large"
+            size={size ? size : "middle"}
             options={options}
             placeholder={placeholder}
           />

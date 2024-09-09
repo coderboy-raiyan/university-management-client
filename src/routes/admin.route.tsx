@@ -5,9 +5,9 @@ import CreateAcademicDepartment from "../pages/admin/academicManagement/createAc
 import CreateAcademicFaculty from "../pages/admin/academicManagement/createAcademicFaculty";
 import CreateAcademicSemester from "../pages/admin/academicManagement/createAcademicSemester";
 import AdminDashboard from "../pages/admin/adminDashboard";
-import CreateAdmin from "../pages/admin/createAdmin";
-import CreateFaculty from "../pages/admin/createFaculty";
-import CreateStudent from "../pages/admin/createStudent";
+import CreateAdmin from "../pages/admin/userManagement/createAdmin";
+import CreateFaculty from "../pages/admin/userManagement/createFaculty";
+import CreateStudent from "../pages/admin/userManagement/createStudent";
 import { TRoutePaths } from "../types";
 
 export const adminPaths: TRoutePaths[] = [
