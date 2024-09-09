@@ -1,6 +1,7 @@
 import { Button, Col, Divider, Row } from "antd";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import CustomForm from "../../../components/From/CustomForm";
+import FormDatePicker from "../../../components/From/FormDatePicker";
 import FormInput from "../../../components/From/FormInput";
 import FormSelectInput from "../../../components/From/FormSelectInput";
 import {
@@ -8,43 +9,39 @@ import {
   genderOptions,
 } from "../../../constant/global.constant";
 
-const studentDummyData = {
-  password: "student123",
-  student: {
-    name: {
-      firstName: "I am ",
-      middleName: "Student",
-      lastName: "Number 1",
-    },
-    gender: "male",
-    dateOfBirth: "1990-01-01",
-    bloogGroup: "A+",
-
-    email: "student2@gmail.com",
-    contactNo: "1235678",
-    emergencyContactNo: "987-654-3210",
-    presentAddress: "123 Main St, Cityville",
-    permanentAddress: "456 Oak St, Townsville",
-
-    guardian: {
-      fatherName: "James Doe",
-      fatherOccupation: "Engineer",
-      fatherContactNo: "111-222-3333",
-      motherName: "Mary Doe",
-      motherOccupation: "Teacher",
-      motherContactNo: "444-555-6666",
-    },
-
-    localGuardian: {
-      name: "Alice Johnson",
-      occupation: "Doctor",
-      contactNo: "777-888-9999",
-      address: "789 Pine St, Villageton",
-    },
-
-    admissionSemester: "65b0104110b74fcbd7a25d92",
-    academicDepartment: "65b00fb010b74fcbd7a25d8e",
+const studentDefaultValues = {
+  name: {
+    firstName: "I am ",
+    middleName: "Student",
+    lastName: "Number 1",
   },
+  gender: "male",
+  bloogGroup: "A+",
+
+  email: "student2@gmail.com",
+  contactNo: "1235678",
+  emergencyContactNo: "987-654-3210",
+  presentAddress: "123 Main St, Cityville",
+  permanentAddress: "456 Oak St, Townsville",
+
+  guardian: {
+    fatherName: "James Doe",
+    fatherOccupation: "Engineer",
+    fatherContactNo: "111-222-3333",
+    motherName: "Mary Doe",
+    motherOccupation: "Teacher",
+    motherContactNo: "444-555-6666",
+  },
+
+  localGuardian: {
+    name: "Alice Johnson",
+    occupation: "Doctor",
+    contactNo: "777-888-9999",
+    address: "789 Pine St, Villageton",
+  },
+
+  admissionSemester: "65b0104110b74fcbd7a25d92",
+  academicDepartment: "65b00fb010b74fcbd7a25d8e",
 };
 
 function CreateStudent() {
@@ -55,7 +52,7 @@ function CreateStudent() {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <CustomForm onSubmit={onSubmit}>
+        <CustomForm onSubmit={onSubmit} defaultValues={studentDefaultValues}>
           {/* -- Personal Info  --- */}
           <Divider>Personal Info.</Divider>
           <Row gutter={10}>
@@ -91,12 +88,7 @@ function CreateStudent() {
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
-              <FormInput
-                type="text"
-                name="dateOfBirth"
-                placeholder="20/09/18"
-                label="Date of Birth"
-              />
+              <FormDatePicker label="Date of Birth" name="dateOfBirth" />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
               <FormSelectInput
@@ -121,9 +113,9 @@ function CreateStudent() {
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
               <FormInput
                 type="text"
-                name="contactInfo"
-                placeholder="Contact Info"
-                label="Contact Info"
+                name="contactNo"
+                placeholder="Contact No"
+                label="Contact No"
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
@@ -240,15 +232,23 @@ function CreateStudent() {
               />
             </Col>
           </Row>
-          {/* Semester  */}
-          <Divider>Semester Info.</Divider>
+          {/* Academic info  */}
+          <Divider>Academic Info.</Divider>
           <Row gutter={8}>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
               <FormInput
                 type="text"
                 name="admissionSemester"
-                placeholder="Permanent Address"
-                label="Permanent Address"
+                placeholder="Admission Semester"
+                label="Admission Semester"
+              />
+            </Col>
+            <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
+              <FormInput
+                type="text"
+                name="academicDepartment"
+                placeholder="Academic Department"
+                label="Academic Department"
               />
             </Col>
           </Row>
