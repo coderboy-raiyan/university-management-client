@@ -8,14 +8,7 @@ import { AcademicSemesterNameOptions } from "../../../constant/academicSemester.
 import { MonthsOptions } from "../../../constant/global.constant";
 import { useCreateAcademicSemestersMutation } from "../../../redux/features/admin/academicManagement.api";
 import { academicSemesterSchema } from "../../../schemas/academicManagement.schema";
-
-const yearOptions = new Array(5).fill(1).map((__, i) => {
-  const updatedYear = new Date().getFullYear() + i;
-  return {
-    value: updatedYear.toString(),
-    label: updatedYear.toString(),
-  };
-});
+import { yearOptions } from "../../../utils/global.utils";
 
 function CreateAcademicSemester() {
   const [createAcademicSemester, { isLoading }] =

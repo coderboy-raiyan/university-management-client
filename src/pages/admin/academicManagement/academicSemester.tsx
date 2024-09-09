@@ -1,8 +1,10 @@
 import type { TableColumnsType, TableProps } from "antd";
 import { Table } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { MonthsOptions } from "../../../constant/global.constant";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
-import { TAcademicSemester } from "../../../types";
+import { TAcademicSemester, TQueryParams } from "../../../types";
+import { yearOptions } from "../../../utils/global.utils";
 
 type TTableData = Omit<
   TAcademicSemester,
@@ -13,67 +15,96 @@ const columns: TableColumnsType<TTableData> = [
   {
     title: "Name",
     dataIndex: "name",
+    showSorterTooltip: { target: "full-header" },
+    filters: [
+      {
+        text: "Autumn",
+        value: "Autumn",
+      },
+      {
+        text: "Summer",
+        value: "Summer",
+      },
+      {
+        text: "Fall",
+        value: "Fall",
+      },
+    ],
   },
   {
     title: "Year",
     dataIndex: "year",
+    filters: yearOptions?.map(({ value }) => ({
+      text: value,
+      value: value,
+    })),
   },
   {
     title: "Start Month",
     dataIndex: "startMonth",
+    filters: MonthsOptions?.map(({ value }) => ({
+      text: value,
+      value: value,
+    })),
   },
   {
     title: "End Month",
     dataIndex: "endMonth",
+    filters: MonthsOptions?.map(({ value }) => ({
+      text: value,
+      value: value,
+    })),
   },
 ];
 
-const onChange: TableProps<TTableData>["onChange"] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
-
 function AcademicSemester() {
-  const {
-    data: semesters,
-    isSuccess,
-    isLoading,
-  } = useGetAllSemestersQuery(null);
-  const [tableData, setTableData] = useState<TTableData[]>([] as TTableData[]);
+  const [params, setParams] = useState<TQueryParams[]>([]);
+  const { data, isFetching } = useGetAllSemestersQuery(params);
 
-  useEffect(() => {
-    if (isSuccess) {
-      const modifiedTableData = semesters?.data?.map(
-        ({ _id, name, year, endMonth, startMonth }) => ({
-          key: _id,
-          name,
-          year,
-          endMonth,
-          startMonth,
-        })
-      );
+  const modifiedTableData = data?.data?.map(
+    ({ _id, name, year, endMonth, startMonth }) => ({
+      key: _id,
+      name,
+      year,
+      endMonth,
+      startMonth,
+    })
+  );
 
-      setTableData(modifiedTableData);
-      console.log(modifiedTableData);
+  const onChange: TableProps<TTableData>["onChange"] = (
+    pagination,
+    filters,
+    sorter,
+    extra
+  ) => {
+    if (extra.action === "filter") {
+      const queryParams: TQueryParams[] = [];
+
+      filters?.name?.forEach((val) => {
+        queryParams.push({ name: "name", value: val });
+      });
+      filters?.year?.forEach((val) => {
+        queryParams.push({ name: "year", value: val });
+      });
+      filters?.startMonth?.forEach((val) => {
+        queryParams.push({ name: "startMonth", value: val });
+      });
+      filters?.endMonth?.forEach((val) => {
+        queryParams.push({ name: "endMonth", value: val });
+      });
+      setParams(queryParams);
     }
-  }, [isSuccess]);
+  };
 
   return (
     <section>
-      {isLoading ? (
-        "Loading..."
-      ) : (
-        <Table
-          columns={columns}
-          dataSource={tableData}
-          onChange={onChange}
-          showSorterTooltip={{ target: "sorter-icon" }}
-        />
-      )}
+      <Table
+        columns={columns}
+        loading={isFetching}
+        dataSource={modifiedTableData}
+        onChange={onChange}
+        showSorterTooltip={{ target: "sorter-icon" }}
+      />
     </section>
   );
 }
