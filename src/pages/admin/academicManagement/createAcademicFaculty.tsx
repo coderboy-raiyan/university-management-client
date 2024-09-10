@@ -11,10 +11,10 @@ function CreateAcademicFaculty() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await createAcademicFaculty(data);
+      await createAcademicFaculty(data).unwrap();
       toast.success("Academic Faculty created successfully");
-    } catch (error) {
-      toast.error("Something went wrong!");
+    } catch (error: any) {
+      toast.error(error?.data.message);
     }
   };
 
@@ -23,7 +23,7 @@ function CreateAcademicFaculty() {
       <Col span={8}>
         <CustomForm onSubmit={onSubmit}>
           <FormInput
-            type="name"
+            type="text"
             name="name"
             placeholder="Name"
             label="Faculty name"
@@ -32,7 +32,7 @@ function CreateAcademicFaculty() {
             <Button loading={isLoading}>Please wait...</Button>
           ) : (
             <Button htmlType="submit" type="primary">
-              Sign in
+              Submit
             </Button>
           )}
         </CustomForm>
