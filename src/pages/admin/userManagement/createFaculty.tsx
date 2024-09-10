@@ -1,5 +1,5 @@
-function CreateFaculty() {
+function createFaculty() {
   return <div>createFaculty</div>;
 }
 
-export default CreateFaculty;
+export default createFaculty;
