@@ -4,7 +4,7 @@ const userManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createStudent: builder.mutation({
       query: (body) => ({
-        url: "/user/create-student",
+        url: "/users/create-student",
         method: "POST",
         body,
       }),

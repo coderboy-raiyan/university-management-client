@@ -6,10 +6,11 @@ import { TFormInputSelectOptions } from "../../types";
 type TFormSelectInput = {
   name: string;
   label: string;
-  options: TFormInputSelectOptions;
+  options: TFormInputSelectOptions | undefined;
   placeholder?: string;
   required?: boolean;
   size?: SizeType;
+  disabled?: boolean;
 };
 
 function FormSelectInput({
@@ -18,6 +19,7 @@ function FormSelectInput({
   options,
   placeholder = "",
   size,
+  disabled = false,
 }: TFormSelectInput) {
   return (
     <Controller
@@ -30,6 +32,7 @@ function FormSelectInput({
             size={size ? size : "middle"}
             options={options}
             placeholder={placeholder}
+            disabled={disabled}
           />
           <p style={{ color: "red" }}>{error?.message}</p>
         </Form.Item>

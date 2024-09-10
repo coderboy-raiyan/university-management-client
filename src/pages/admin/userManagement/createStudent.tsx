@@ -1,5 +1,6 @@
-import { Button, Col, Divider, Row } from "antd";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import CustomForm from "../../../components/From/CustomForm";
 import FormDatePicker from "../../../components/From/FormDatePicker";
 import FormInput from "../../../components/From/FormInput";
@@ -8,6 +9,11 @@ import {
   bloodGroupOptions,
   genderOptions,
 } from "../../../constant/global.constant";
+import {
+  useGetAllAcademicDepartmentsQuery,
+  useGetAllSemestersQuery,
+} from "../../../redux/features/admin/academicManagement.api";
+import { useCreateStudentMutation } from "../../../redux/features/admin/userManagement.api";
 
 const studentDefaultValues = {
   name: {
@@ -39,14 +45,35 @@ const studentDefaultValues = {
     contactNo: "777-888-9999",
     address: "789 Pine St, Villageton",
   },
-
-  admissionSemester: "65b0104110b74fcbd7a25d92",
-  academicDepartment: "65b00fb010b74fcbd7a25d8e",
 };
 
 function CreateStudent() {
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const { data: semesters, isFetching: sLoading } =
+    useGetAllSemestersQuery(null);
+  const { data: departments, isFetching: dLoading } =
+    useGetAllAcademicDepartmentsQuery(null, { skip: sLoading });
+
+  const [createStudent, { isLoading }] = useCreateStudentMutation();
+
+  const academicSemestersOptions = semesters?.data?.map((val: any) => ({
+    value: val?._id,
+    label: `${val?.name} - ${val?.year}`,
+  }));
+  const academicDepartmentOptions = departments?.data?.map((val: any) => ({
+    value: val?._id,
+    label: val?.name,
+  }));
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const formData = new FormData();
+    try {
+      const studentData = { student: { ...data } };
+      formData.append("data", JSON.stringify(studentData));
+      formData.append("file", data?.image);
+      await createStudent(formData).unwrap();
+      toast.success("Student created successfully");
+    } catch (error: any) {
+      toast.error("Something went wrong");
+    }
   };
 
   return (
@@ -95,6 +122,21 @@ function CreateStudent() {
                 label="Blood group"
                 name="bloogGroup"
                 options={bloodGroupOptions}
+              />
+            </Col>
+            <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
+              <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item>
+                    <Input
+                      type="file"
+                      value={value?.fileName}
+                      {...field}
+                      onChange={(e) => onChange(e.target.files![0])}
+                    />
+                  </Form.Item>
+                )}
               />
             </Col>
           </Row>
@@ -236,23 +278,29 @@ function CreateStudent() {
           <Divider>Academic Info.</Divider>
           <Row gutter={8}>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
-              <FormInput
-                type="text"
+              <FormSelectInput
                 name="admissionSemester"
-                placeholder="Admission Semester"
                 label="Admission Semester"
+                options={academicSemestersOptions}
+                disabled={sLoading}
               />
             </Col>
             <Col span={24} lg={{ span: 8 }} md={{ span: 12 }}>
-              <FormInput
-                type="text"
+              <FormSelectInput
                 name="academicDepartment"
-                placeholder="Academic Department"
                 label="Academic Department"
+                options={academicDepartmentOptions}
+                disabled={dLoading}
               />
             </Col>
           </Row>
-          <Button htmlType="submit">Submit</Button>
+          {isLoading ? (
+            <Button loading={isLoading}>Please wait...</Button>
+          ) : (
+            <Button htmlType="submit" type="primary">
+              Submit
+            </Button>
+          )}
         </CustomForm>
       </Col>
     </Row>
